@@ -1,6 +1,7 @@
 package org.example
 
 import org.example.services.DB
+import org.example.services.ExcelTemplate
 
 fun main() {
     // 1. 既存のひどい設計の生SQLをそのまま定義 (トリプルクォートで複数行も楽々)
@@ -19,11 +20,11 @@ fun main() {
     println("result: $list")
 
     // 3. テンプレートエクセルファイルを元に帳票出力
-//    ExcelTemplate("template.xlsx")
-//        .build(
-//            mutableMapOf("employees" to list),
-//            "report.xlsx"
-//        )
-//
-//    println("エクセル出力が完了しました。")
+    ExcelTemplate("template.xlsx")
+        .build(
+            mutableMapOf("employees" to list),
+            "report.xlsx"
+        )
+
+    println("エクセル出力が完了しました。")
 }

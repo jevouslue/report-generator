@@ -11,7 +11,7 @@ class ExcelTemplate {
         this.templateFile = templateFile
     }
 
-    fun build(data: MutableMap<String, Any>, outputFile: String) {
+    fun build(data: MutableMap<String, Any?>, outputFile: String) {
         JxlsPoiTemplateFillerBuilder.newInstance()
             .withTemplate("resources/xlsx_templates/$templateFile")
             .buildAndFill(
