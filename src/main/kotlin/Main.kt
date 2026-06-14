@@ -16,7 +16,7 @@ fun main() {
 
     // 2. SQL実行
     // プリペアドステートメントも対応
-    val list = DB().first(sql)
+    val list = DB().get(sql)
     println("result: $list")
 
     // 3. テンプレートエクセルファイルを元に帳票出力

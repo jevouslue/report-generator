@@ -11,6 +11,8 @@ services:
     image: gvenzl/oracle-free
     environment:
       ORACLE_PASSWORD: '${DB_PASSWORD}'
+      APP_USER: '${DB_USER}'
+      APP_USER_PASSWORD:  '${DB_PASSWORD}'
     healthcheck:
       test: ["CMD", "healthcheck.sh"]
       interval: 10s

@@ -2,10 +2,24 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+buildscript {
+    repositories {
+        mavenCentral() // 1. buildscript用のリポジトリ（倉庫）を指定
+    }
+    dependencies {
+        // 2. OracleのJDBCドライバ本体
+        classpath("com.oracle.database.jdbc:ojdbc11:23.26.2.0.0")
+        // 3. Flyway 10以降で必須になった、Flyway公式のOracle用拡張プラグイン
+        classpath("org.flywaydb:flyway-database-oracle:12.8.1")
+    }
+}
+
 plugins {
     application
     id("com.google.devtools.ksp") version "2.3.9"
     kotlin("jvm") version "2.4.0"
+
+    id("org.flywaydb.flyway") version "12.8.1"
 }
 
 group = "org.example"
