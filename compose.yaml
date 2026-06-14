@@ -1,0 +1,31 @@
+services:
+  app:
+    image: eclipse-temurin:17-jdk
+#    tty: true
+#    ports:
+#      - "80:8080"
+    volumes:
+      - .:/app
+    working_dir: /app
+  #    # コンテナが勝手に終了しないようにダミーの命令を入れておく（IntelliJ接続用）
+  #    command: sleep infinity
+    command: ./gradlew run # ← コンテナ起動時に自動でGradleを実行させる
+
+  db:
+    image: gvenzl/oracle-free
+    environment:
+      ORACLE_PASSWORD: password
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+      start_interval: 5s
+    ports:
+      - "1521:1521"
+    volumes:
+      - 'report-generator-oracle:/opt/oracle/oradata'
+volumes:
+  report-generator-oracle:
+    driver: local
