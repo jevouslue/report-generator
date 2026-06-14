@@ -1,5 +1,6 @@
 package org.example.services
 
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.datasource.DriverManagerDataSource
 
@@ -13,7 +14,26 @@ class DB {
     private val jdbcTemplate = NamedParameterJdbcTemplate(dataSource)
 
     @Suppress("SqlSourceToSinkFlow")
-    fun queryForList(sql: String, params: MutableMap<String, Any?> = mutableMapOf()): List<Map<String, Any?>> {
+    fun first(sql: String, params: MutableMap<String, Any?> = mutableMapOf()): Map<String, Any?>? {
+        // 1. 実体である JdbcTemplate にキャストする
+        val template = jdbcTemplate.jdbcOperations as? JdbcTemplate
+
+        // 2. キャストできた場合のみ maxRows を制御する（基本は必ずキャストできます）
+        val previousMaxRows = template?.maxRows ?: -1
+
+        try {
+            template?.maxRows = 1 // 最大件数を 1 に設定
+            // 3. クエリを実行
+            val list = jdbcTemplate.queryForList(sql, params)
+            return list.firstOrNull()
+        } finally {
+            // 4. 元の設定値に戻す
+            template?.maxRows = previousMaxRows
+        }
+    }
+
+    @Suppress("SqlSourceToSinkFlow")
+    fun get(sql: String, params: MutableMap<String, Any?> = mutableMapOf()): List<Map<String, Any?>> {
         return jdbcTemplate.queryForList(sql, params)
     }
 }
