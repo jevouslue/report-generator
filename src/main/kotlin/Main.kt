@@ -10,9 +10,9 @@ fun main() {
     // 1. DB接続設定 (生Java/Kotlinで定義)
     val dataSource = DriverManagerDataSource().apply {
         setDriverClassName("oracle.jdbc.OracleDriver")
-        url = "jdbc:oracle:thin:@//db:1521/FREEPDB1"
-        username = "SYSTEM"
-        password = "password"
+        url = System.getenv("DB_URL") ?: throw IllegalStateException("環境変数 DB_URL が設定されていません。")
+        username = System.getenv("DB_USER") ?: throw IllegalStateException("環境変数 DB_USER が設定されていません。")
+        password = System.getenv("DB_PASSWORD") ?: throw IllegalStateException("環境変数 DB_PASSWORD が設定されていません。")
     }
 
     val jdbcTemplate = NamedParameterJdbcTemplate(dataSource)
